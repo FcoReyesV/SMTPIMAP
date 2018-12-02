@@ -1,18 +1,16 @@
-import requests
+import urllib.request
 import time
-inicio = time.time()
-r = requests.get('http://192.168.201.2')
-headers = r.headers
-content = r.content
-fin = time.time()
 
-print(headers)
+def solicitudHTTP(url): # En mi caso la url es 192.168.201.2
+    inicio = time.time()
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req) as response:
+        response.getheaders()
+        final = time.time()
+        b = response.getheader('Content-Length')
 
-tiempo = float(fin-inicio)
-bytes = int(headers['Content-Length'])
-velocidad = int(bytes/tiempo)
+    tiempo = float(final-inicio)
+    bytes = int(b)
+    velocidad = int(bytes/tiempo)
 
-print('Tiempo de respuesta: ', tiempo)
-print('Número de bytes recibidos: ', bytes)
-print('Velocidad de descarga: ' +  str(velocidad) + ' bytes por segundo')
-
+    return [tiempo, bytes, velocidad]
